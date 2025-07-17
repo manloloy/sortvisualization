@@ -37,6 +37,12 @@ bool MergeSortPanel::step() {
     if (!tasks.empty()) {
         MergeTask& task = tasks.front();
 
+        // Color the current left and right merge regions
+        for (int idx = task.left; idx < task.mid; ++idx)
+            bars[idx].setFillColor(sf::Color(173, 216, 230)); // LEFT_COLOR
+        for (int idx = task.mid; idx < task.right; ++idx)
+            bars[idx].setFillColor(sf::Color(144, 238, 144)); // RIGHT_COLOR
+
         if (!task.initialized) {
             task.leftPart = std::vector<int>(temp.begin() + task.left, temp.begin() + task.mid);
             task.rightPart = std::vector<int>(temp.begin() + task.mid, temp.begin() + task.right);
@@ -46,44 +52,39 @@ bool MergeSortPanel::step() {
             // Highlight pivot (midpoint) once it's initialized
             if (task.mid < static_cast<int>(bars.size()))
                 bars[task.mid].setFillColor(sf::Color::Magenta);
-            }
+            
+        }
 
-        // Perform merge step
+        // Merge step
         if (task.i < static_cast<int>(task.leftPart.size()) && task.j < static_cast<int>(task.rightPart.size())) {
             if (task.leftPart[task.i] <= task.rightPart[task.j]) {
                 values[task.k] = task.leftPart[task.i];
-                updateBarGraphics();  // update size first
-                bars[task.k].setFillColor(sf::Color::Green);  // then set color
+                bars[task.k].setFillColor(sf::Color::Green); // Chosen from left
                 task.i++;
             } else {
                 values[task.k] = task.rightPart[task.j];
-                updateBarGraphics();
-                bars[task.k].setFillColor(sf::Color::Yellow);
+                bars[task.k].setFillColor(sf::Color::Yellow); // Chosen from right
                 task.j++;
             }
             task.k++;
-        }
-        else if (task.i < static_cast<int>(task.leftPart.size())) {
+        } else if (task.i < static_cast<int>(task.leftPart.size())) {
             values[task.k] = task.leftPart[task.i];
-            updateBarGraphics();
             bars[task.k].setFillColor(sf::Color::Green);
             task.i++;
             task.k++;
-        }
-        else if (task.j < static_cast<int>(task.rightPart.size())) {
+        } else if (task.j < static_cast<int>(task.rightPart.size())) {
             values[task.k] = task.rightPart[task.j];
-            updateBarGraphics();
             bars[task.k].setFillColor(sf::Color::Yellow);
             task.j++;
             task.k++;
-        }
-        else {
-            tasks.pop();  // Task complete
+        } else {
+            // Task done
+            tasks.pop();
         }
 
+        updateBarGraphics();
         return true;
-    }
-    else {
+    } else {
         temp = values;
         prepareNextPass();
         return true;
