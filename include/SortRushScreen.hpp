@@ -2,6 +2,9 @@
 #define SORT_RUSH_SCREEN_HPP
 
 #include "Screen.hpp"
+#include "FallingBlock.hpp"
+
+#include <vector>
 #include <SFML/Graphics.hpp>
 
 class SortRushScreen : public Screen {
@@ -12,7 +15,9 @@ public:
     void draw(sf::RenderWindow& window) override;
 
 private:
-    sf::Text title;
+    std::vector<FallingBlock> blocks;
+    float spawnTimer = 0.0f;
+    float spawnInterval = 1.f; // seconds between new block spawns
 };
 
 #endif
