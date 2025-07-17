@@ -21,12 +21,14 @@ public:
 private:
     sf::Text prompt;
     Button startButton;
+    Button sortRushButton;
 
     // Algorithm selection buttons
     std::vector<Button> algoButtons;
     std::vector<bool> algoSelected; // same size as algoButtons
     
     std::vector<SortAlgorithm> selectedAlgos; // what gets passed to SortScreen
+
 
 };
 

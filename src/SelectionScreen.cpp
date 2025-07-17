@@ -2,10 +2,12 @@
 #include "SelectionScreen.hpp"
 #include "AppManager.hpp"
 #include "SortScreen.hpp"
+#include "SortRushScreen.hpp"
 #include "config.hpp"
 
 SelectionScreen::SelectionScreen()
-    : startButton("Start Sorting", {100, 400}, {200, 60})
+    : startButton("Start Sorting", {100, 400}, {200, 60}),
+      sortRushButton("Play Sort Rush", {WINDOW_WIDTH / 2.0f - 150, 460}, {300, 50})
 {
     prompt.setFont(globalFont);
     prompt.setString("Select algorithms to visualize:");
@@ -35,6 +37,7 @@ SelectionScreen::SelectionScreen()
         algoButtons.push_back(std::move(btn));
     }
 
+    // Start button callback
     startButton.setCallback([this]() {
         selectedAlgos.clear();
 
@@ -57,6 +60,11 @@ SelectionScreen::SelectionScreen()
             );
         }
     });
+
+    // Sort Rush button callback
+    sortRushButton.setCallback([]() {
+        AppManager::getInstance().pushScreen(std::make_unique<SortRushScreen>());
+    });
 }
 
 void SelectionScreen::handleEvent(const sf::Event& event) {
@@ -66,6 +74,7 @@ void SelectionScreen::handleEvent(const sf::Event& event) {
         button.handleEvent(event, window);
 
     startButton.handleEvent(event, window);
+    sortRushButton.handleEvent(event, window);
 }
 
 void SelectionScreen::update(float) {
@@ -95,4 +104,5 @@ void SelectionScreen::draw(sf::RenderWindow& window) {
     }
 
     startButton.draw(window);
+    sortRushButton.draw(window);
 }

@@ -24,6 +24,8 @@ private:
 
     sf::RenderWindow window;
     std::stack<std::unique_ptr<Screen>> screenStack;
+    bool shouldReturnToMenu = false;
+
 };
 
 #endif // APP_MANAGER_HPP

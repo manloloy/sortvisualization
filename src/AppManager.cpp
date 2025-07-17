@@ -37,6 +37,14 @@ void AppManager::run() {
             screenStack.top()->draw(window);
 
         window.display();
+
+        if (shouldReturnToMenu) {
+            while (!screenStack.empty())
+                screenStack.pop();
+            pushScreen(std::make_unique<SelectionScreen>());
+            shouldReturnToMenu = false;
+        }
+
     }
 }
 
@@ -50,10 +58,9 @@ void AppManager::popScreen() {
 }
 
 void AppManager::returnToMenu() {
-    while (!screenStack.empty())
-        screenStack.pop();
-    pushScreen(std::make_unique<SelectionScreen>());
+    shouldReturnToMenu = true;
 }
+
 
 sf::RenderWindow& AppManager::getWindow() {
     return window;
