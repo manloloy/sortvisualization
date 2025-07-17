@@ -12,21 +12,37 @@
 #include "QuickSortPanel.hpp"
 #include "MergeSortPanel.hpp"
 
+// helper function
+sf::Vector2f calculatePanelPosition(int index, int totalPanels, sf::Vector2f panelSize) {
+    if (totalPanels == 1) {
+        float x = (WINDOW_WIDTH - panelSize.x) / 2;
+        float y = (WINDOW_HEIGHT - panelSize.y) / 2;
+        return sf::Vector2f(x, y);
+    }
 
-// Helper function to calculate grid-based panel position
-sf::Vector2f calculatePanelPosition(int index, int totalPanels) {
-    int cols = (totalPanels <= 2) ? totalPanels : 2;
-    int rows = (totalPanels + 1) / 2;
+    if (totalPanels == 2) {
+        float x = (index == 0) ? 0 : WINDOW_WIDTH / 2;
+        float y = (WINDOW_HEIGHT - panelSize.y) / 2;
+        return sf::Vector2f(x, y);
+    }
 
-    float panelWidth = WINDOW_WIDTH / cols;
-    float panelHeight = (WINDOW_HEIGHT - 150) / rows;
+    if (totalPanels == 3) {
+        if (index < 2) {
+            float x = (index == 0) ? 0 : WINDOW_WIDTH / 2;
+            float y = 120;
+            return sf::Vector2f(x, y);
+        } else {
+            float x = 0;
+            float y = 120 + panelSize.y;
+            return sf::Vector2f(x, y);
+        }
+    }
 
-    int row = index / cols;
-    int col = index % cols;
-
-    float x = col * panelWidth;
-    float y = 120 + row * panelHeight;
-
+    // totalPanels == 4
+    int row = index / 2;
+    int col = index % 2;
+    float x = col * panelSize.x;
+    float y = 120 + row * panelSize.y;
     return sf::Vector2f(x, y);
 }
 
@@ -40,9 +56,30 @@ SortScreen::SortScreen(const std::vector<SortAlgorithm>& selectedAlgos)
     label.setFillColor(sf::Color::White);
 
     for (size_t i = 0; i < algorithms.size(); ++i) {
-        sf::Vector2f panelSize(400, 300);
-        sf::Vector2f position = calculatePanelPosition(i, algorithms.size());
+        sf::Vector2f panelSize;
 
+        switch (algorithms.size()) {
+            case 1:
+                panelSize = sf::Vector2f(WINDOW_WIDTH * 0.8f, WINDOW_HEIGHT * 0.6f);
+                break;
+            case 2:
+                panelSize = sf::Vector2f(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT * 0.6f);
+                break;
+            case 3:
+                panelSize = (i < 2) 
+                    ? sf::Vector2f(WINDOW_WIDTH / 2.0f, (WINDOW_HEIGHT - 150) / 2.0f)
+                    : sf::Vector2f(WINDOW_WIDTH, (WINDOW_HEIGHT - 150) / 2.0f);
+                break;
+            case 4:
+                panelSize = sf::Vector2f(WINDOW_WIDTH / 2.0f, (WINDOW_HEIGHT - 150) / 2.0f);
+                break;
+            default:
+                panelSize = sf::Vector2f(400, 300); // fallback
+                break;
+        }
+
+        sf::Vector2f position = calculatePanelPosition(i, algorithms.size(), panelSize);
+        
         std::unique_ptr<SortPanel> panel;
 
         switch (algorithms[i]) {
