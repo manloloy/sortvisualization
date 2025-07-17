@@ -33,7 +33,7 @@ void SortPanel::updateBarGraphics() {
         sf::RectangleShape& bar = bars[i];
         bar.setSize({barWidth - 2.0f, barHeight}); // 2 px gap
         bar.setPosition(origin.x + i * barWidth, origin.y + (panelSize.y - barHeight));
-        bar.setFillColor(DEFAULT_COLOR);
+        //bar.setFillColor(DEFAULT_COLOR);
     }
 }
 

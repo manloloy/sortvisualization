@@ -13,6 +13,8 @@ public:
 
     void update(float dt);
     void draw(sf::RenderWindow& window);
+    sf::Vector2f getSize() const { return panelSize; }
+    sf::Vector2f getPosition() const { return origin; }
 
 protected:
     std::vector<int> values;                // bar values

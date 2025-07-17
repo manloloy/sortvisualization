@@ -6,7 +6,7 @@ SRCDIR = src
 OBJDIR = obj
 TARGET = sortvisualizer
 
-SRC = main.cpp AppManager.cpp SelectionScreen.cpp SortScreen.cpp Button.cpp SortPanel.cpp SelectionSortPanel.cpp
+SRC = main.cpp AppManager.cpp SelectionScreen.cpp SortScreen.cpp Button.cpp SortPanel.cpp SelectionSortPanel.cpp InsertionSortPanel.cpp QuickSortPanel.cpp MergeSortPanel.cpp
 OBJ = $(SRC:.cpp=.o)
 
 SRC_PATHS = $(addprefix $(SRCDIR)/, $(SRC))
