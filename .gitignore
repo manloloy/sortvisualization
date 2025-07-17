@@ -1,0 +1,13 @@
+# Build output
+sortvisualizer
+obj/
+*.o
+
+# Backup and temp files
+*~
+*.swp
+.DS_Store
+
+# OS/Editor specific
+.vscode/
+.idea/
