@@ -18,6 +18,8 @@ public:
     void draw(sf::RenderWindow& window) override;
 
 private:
+    float stepDelay = 0.2f;      // seconds between steps
+    float timeSinceLastStep = 0.0f;
     sf::Font font;
     sf::Text label;
     std::vector<SortAlgorithm> algorithms;

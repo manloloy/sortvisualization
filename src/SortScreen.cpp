@@ -5,7 +5,10 @@
 #include "SortTypes.hpp"
 #include <iostream>
 #include "SortPanel.hpp"
+
 #include "TestSortPanel.hpp"
+#include "SelectionSortPanel.hpp"
+
 
 
 SortScreen::SortScreen(const std::vector<SortAlgorithm>& selectedAlgos)
@@ -31,7 +34,7 @@ SortScreen::SortScreen(const std::vector<SortAlgorithm>& selectedAlgos)
         }
     }
 
-    testPanel = std::make_unique<TestSortPanel>(
+    testPanel = std::make_unique<SelectionSortPanel>(
         sf::Vector2f(100, 150),
         sf::Vector2f(800, 400)
     );
@@ -43,7 +46,14 @@ void SortScreen::handleEvent(const sf::Event& event) {
 }
 
 void SortScreen::update(float dt) {
-    testPanel->update(dt);
+    timeSinceLastStep += dt;
+
+    if (timeSinceLastStep >= stepDelay) {
+        testPanel->step();              // animate 1 step
+        timeSinceLastStep = 0.0f;       // reset timer
+    }
+
+    testPanel->update(dt);              // still allow SFML animations if needed
 }
 
 void SortScreen::draw(sf::RenderWindow& window) {
