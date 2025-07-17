@@ -18,6 +18,8 @@ private:
     std::vector<FallingBlock> blocks;
     float spawnTimer = 0.0f;
     float spawnInterval = 1.f; // seconds between new block spawns
+    sf::RectangleShape dropZone;
+
 };
 
 #endif

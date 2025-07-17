@@ -20,7 +20,7 @@ FallingBlock::FallingBlock(int value, sf::Vector2f position)
 }
 
 void FallingBlock::update(float dt) {
-    if (!beingDragged) {
+    if (!isDragging) {
         shape.move(velocity * dt);
         label.move(velocity * dt);
     }
@@ -38,26 +38,26 @@ void FallingBlock::handleEvent(const sf::Event& event, const sf::RenderWindow& w
         event.mouseButton.button == sf::Mouse::Left &&
         shape.getGlobalBounds().contains(mousePos))
     {
-        beingDragged = true;
+        isDragging = true;
         dragOffset = mousePos - shape.getPosition();
     }
     else if (event.type == sf::Event::MouseButtonReleased &&
              event.mouseButton.button == sf::Mouse::Left)
     {
-        beingDragged = false;
+        isDragging = false;
     }
-    else if (event.type == sf::Event::MouseMoved && beingDragged) {
+    else if (event.type == sf::Event::MouseMoved && isDragging) {
         shape.setPosition(mousePos - dragOffset);
         label.setPosition(shape.getPosition() + sf::Vector2f(30.f, 20.f));
     }
 }
 
 bool FallingBlock::isBeingDragged() const {
-    return beingDragged;
+    return isDragging;
 }
 
 void FallingBlock::setBeingDragged(bool dragged) {
-    beingDragged = dragged;
+    isDragging = dragged;
 }
 
 int FallingBlock::getValue() const {
@@ -75,4 +75,28 @@ sf::Vector2f FallingBlock::getPosition() const {
 void FallingBlock::setPosition(const sf::Vector2f& pos) {
     shape.setPosition(pos);
     label.setPosition(pos + sf::Vector2f(30.f, 20.f));
+}
+bool FallingBlock::contains(const sf::Vector2f& point) const {
+    return shape.getGlobalBounds().contains(point);
+}
+
+void FallingBlock::startDrag(const sf::Vector2f& mousePos) {
+    isDragging = true;
+    dragOffset = mousePos - shape.getPosition();  // changed to match handleEvent
+}
+
+
+void FallingBlock::drag(const sf::Vector2f& mousePos) {
+    if (isDragging) {
+        shape.setPosition(mousePos + dragOffset);
+        label.setPosition(shape.getPosition() + sf::Vector2f(30.f, 20.f));  // add this line
+    }
+}
+
+
+void FallingBlock::stopDrag() {
+    isDragging = false;
+}
+void FallingBlock::setVelocity(const sf::Vector2f& v) {
+    velocity = v;
 }

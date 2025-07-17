@@ -17,6 +17,11 @@ public:
     sf::FloatRect getBounds() const;
     sf::Vector2f getPosition() const;
     void setPosition(const sf::Vector2f& pos);
+    bool contains(const sf::Vector2f& point) const;
+    void startDrag(const sf::Vector2f& mousePos);
+    void drag(const sf::Vector2f& mousePos);
+    void stopDrag();
+    void setVelocity(const sf::Vector2f& v);
 
 private:
     int value;
@@ -24,7 +29,7 @@ private:
     sf::Text label;
 
     sf::Vector2f velocity;
-    bool beingDragged = false;
+    bool isDragging = false;
     sf::Vector2f dragOffset;
 };
 
